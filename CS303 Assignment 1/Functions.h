@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <algorithm> // For any_of
+#include <limits>
 #include <iterator>
 
 
@@ -17,24 +18,12 @@ using namespace std;
 const int SIZE = 101; // 101 for the extra space for adding an element at the end of the array
 int arr[SIZE];
 
-void readData() {
-
-	//using ofstream for output file operations.
-	ofstream OutFile;
-
-	// Opening file "Out.txt" in write mode.
-	OutFile.open("Out.txt");
-
-	// Check if the file was successfully created.
-	if (!OutFile.is_open())
-	{
-		cout << "Error in creating file!" << endl;
-
-	}
-	cout << "Output File created successfully." << endl;
-	OutFile << "This is the output file." << endl;
 
 
+void readData(ofstream& OutFile) {
+
+
+	
 
 	string inFileName = "A1input.txt";
 	ifstream inFile;
@@ -54,8 +43,7 @@ void readData() {
 	else { //Error message
 		cerr << "Can't find input file " << inFileName << endl;
 	}
-	// Close the output file
-	OutFile.close();
+	
 }
 
 
@@ -127,7 +115,7 @@ int maxIndex() {
 	return maxidx;
 }
 
-bool IntExists() {
+bool IntExists(ofstream& OutFile) {
 
 	int index = 0;
 	int val = 0;
@@ -137,68 +125,85 @@ bool IntExists() {
 	do { 
 		try { // https://www.geeksforgeeks.org/exception-handling-c/
 			cout << "Please enter an index to view its element:  ";
+			OutFile << "Please enter an index to view its element:  ";
+
 			cin >> index;
+			OutFile << index << endl;
 
 
 			if (index < 0 || index >= SIZE) {
 				cout << "\n\nInvalid index [" << index << "]. Please enter a valid index between 0 and "
 					<< SIZE - 1 << ".\n";
+				OutFile << "\n\nInvalid index [" << index << "]. Please enter a valid index between 0 and "
+					<< SIZE - 1 << ".\n";
 				throw out_of_range("Out of range");
 			}
-			if (index == NULL) {
-				cout << "\n\nNULL input is not allowed. Please enter a valid index.\n";
-				throw invalid_argument("Input cannot be null");
-
-			}
+	
 
 		}
 		// executed when exception is of type out_of_range
 		catch (out_of_range e) {
 			cout << "Caught exception: " << e.what() << endl;
-		}
-		// executed when exception is type invalid_argument
-		catch (invalid_argument e) {
-			cout << "Caught exception: " << e.what() << endl;
+			OutFile << "Caught exception: " << e.what() << endl;
+
 		}
 
-	} while (!(index > 0 && index < SIZE && index != NULL));
+	} while (!(index >= 0 && index < SIZE));
 
 
-	if ((index > 0 && index < SIZE && index != NULL))
+	if ((index >= 0 && index < SIZE))
 		cout << "VALID INDEX [" << index << "] with Element " << arr[index] << endl;
+	OutFile << "VALID INDEX [" << index << "] with Element " << arr[index] << endl;
+
 	return index;
 	return true;
 }
 
 
-bool ValidInput(int& index) {
-//	int index = 0;
-	int val = 0;
-	val = arr[index];
+bool ValidInput(ofstream& OutFile) {
+	int index = -1;
+	while (true) {
+		try {
+			std::cout << "\nPlease enter an index between 0 and " << (SIZE - 1) << ": ";
+			OutFile << "\nPlease enter an index between 0 and " << (SIZE - 1) << ": ";
 
-	do {
-		cout << "Please enter an index:  ";
-		cin >> index;
+			if (!(std::cin >> index)) {
+				// Non-integer input
+				throw std::invalid_argument("Input is not a valid integer.");
+			}
+			if (index < 0 || index >= SIZE) {
+				// Out-of-range integer
+				throw std::out_of_range("Index is out of valid range.");
+			}
+			// If we get here, it's valid
+			std::cout << "You entered index " << index
+				<< " (value = " << arr[index] << ")\n";
+			OutFile << "You entered index " << index
+				<< " (value = " << arr[index] << ")\n";
+			return true;
+		}
+		catch (const std::invalid_argument& e) {
+			std::cerr << "Invalid input: " << e.what() << "\n";
+			OutFile << "Invalid input: " << e.what() << "\n";
 
-		if (index < 0 || index >= SIZE) {
-			cout << "Invalid index [" << index << "]. Please enter a valid index between 0 and 99.\n";
 		}
-		if (index == NULL) {
-			cout << "NULL input is not allowed. Please enter a valid index.\n";
+		catch (const std::out_of_range& e) {
+			std::cerr << "Invalid input: " << e.what()
+				<< " (must be 0 to " << (SIZE - 1) << ")\n";
+			OutFile << "Invalid input: " << e.what()
+				<< " (must be 0 to " << (SIZE - 1) << ")\n";
 		}
-		
-	} while (!(index > 0 && index < SIZE && index != NULL));
-	if ((index > 0 && index < SIZE && index != NULL))
-		cout << "VALID INDEX [" << index << "]\n\n";
-	return index;
-	return true;
+		// clear error flags and discard bad input
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
 }
 
 
 
 
 // (QUESTION 2) Function to change an element at an index and display the old and new values
-int modify_value() {
+int modify_value(ofstream& OutFile) {
 
 	int oldIndex = 0;
 	int oldValue = 0;
@@ -208,39 +213,46 @@ int modify_value() {
 	do {
 		try {
 			cout << "\nPlease enter an index to change its element: ";
+			OutFile << "\nPlease enter an index to change its element: ";
 			cin >> oldIndex;
+			OutFile << oldIndex << endl;
 
 			if (oldIndex < 0 || oldIndex >= SIZE - 1) {
 				cout << "\nInvalid index [" << oldIndex << "]. Please enter a valid index from 0 to 99.\n";
+				OutFile << "\nInvalid index [" << oldIndex << "]. Please enter a valid index from 0 to 99.\n";
 				throw out_of_range("Out of range");
 			}
-			else if (oldIndex == NULL) {
-				cout << "\nNULL input is not allowed. Please enter a valid index.\n";
-				throw invalid_argument("Input cannot be null");
-			}
+
 		}
 		// executed when exception is of type out_of_range
 		catch (out_of_range e) {
 			cout << "Caught exception: " << e.what() << endl;
-		}
-		// executed when exception is type invalid_argument
-		catch (invalid_argument e) {
-			cout << "Caught exception: " << e.what() << endl;
+			OutFile << "Caught exception: " << e.what() << endl;
+
 		}
 
-	} while (!(oldIndex >= 0 && oldIndex < SIZE-1 && oldIndex != NULL)); // Ensure valid index input
-		if ((oldIndex > 0 && oldIndex < SIZE-1 && oldIndex != NULL))
+
+	} while (!(oldIndex >= 0 && oldIndex < SIZE-1)); // Ensure valid index input
+		if ((oldIndex >= 0 && oldIndex < SIZE-1))
 			cout << "\nValid index [" << oldIndex << "]\n\n";
+		OutFile << "\nValid index [" << oldIndex << "]\n\n";
+
 
 
 	cout << "To what INTEGER would you like to change the element to? ";
+	OutFile << "To what INTEGER would you like to change the element to? ";
+
 	cin >> newValue;
+	OutFile << newValue << endl;
 	oldValue = arr[oldIndex];
 
 	arr[oldIndex] = newValue; // Change the value at the specified index
 
 	cout << "\nBEFORE\n Index = " << oldIndex << "\n Element = " << oldValue << endl;
+	OutFile << "\nBEFORE\n Index = " << oldIndex << "\n Element = " << oldValue << endl;
+
 	cout << "\nAFTER\n Index = " << oldIndex << "\n Element = " << newValue << endl;
+	OutFile << "\nAFTER\n Index = " << oldIndex << "\n Element = " << newValue << endl;
 
 
 	return newValue;
@@ -249,26 +261,32 @@ int modify_value() {
 
 
 // Function to display the array elements
-void displayArr(int arr[], int n) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
+void displayArr(int arr[], int n, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
 	for (int i = 0; i < n; i++) {
 		cout << arr[i] << ", ";
+		OutFile << arr[i] << ", ";
+
 	}
-	cout << endl;
+	OutFile << endl;
 }
 
 // (QUESTION 3) Function to insert an element at the end of the array
-void insertAtEnd(int arr[], int& n, int e) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
+void insertAtEnd(int arr[], int& n, int e, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
 
 	try {
 
 		if (e < 0) {
-			cout << "\nInvalid element. Please enter a positive integer.\n";
+			cout << "\nInvalid element. Please enter a positive integer over 0.\n";
+			OutFile << "\nInvalid element. Please enter a positive integer over 0.\n";
+
 			throw out_of_range("Out of range");
 			std::cin.clear(); // Clear the error flags
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard the invalid input
 		}
 		else if (e == 0) {
 			cout << "\nInvalid element. Please enter an integer greater than 0.\n";
+			OutFile << "\nInvalid element. Please enter an integer greater than 0.\n";
+
 			throw out_of_range("Out of range");
 			std::cin.clear(); // Clear the error flags
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard the invalid input
@@ -278,6 +296,8 @@ void insertAtEnd(int arr[], int& n, int e) { // https://www.tutorialspoint.com/c
 	// executed when exception is of type out_of_range
 	catch (out_of_range e) {
 		cout << "Caught exception: " << e.what() << endl;
+		OutFile << "Caught exception: " << e.what() << endl;
+
 	}
 
 	if (n < SIZE) {
@@ -288,9 +308,12 @@ void insertAtEnd(int arr[], int& n, int e) { // https://www.tutorialspoint.com/c
 
 
 
-void removeElement(int arr[], int key) { // https://stackoverflow.com/questions/879603/remove-an-array-element-and-shift-the-remaining-ones
+void removeElement(int arr[], int key, ofstream& OutFile) { // https://stackoverflow.com/questions/879603/remove-an-array-element-and-shift-the-remaining-ones
 	cout << "\nPlease enter an index to remove its element:  ";
+	OutFile << "\nPlease enter an index to remove its element:  ";
+
 	cin >> key;
+	OutFile << key << endl;
 
 	// delete element at index key
 	for (int i = key; i < SIZE; ++i)
@@ -307,7 +330,8 @@ void removeElement(int arr[], int key) { // https://stackoverflow.com/questions/
 	// Calculate the new size after removal
 	int ns = arrayEnd - arr; // https://www.geeksforgeeks.org/std-remove-algorithm-in-cpp/
 	for (int i = 0; i < ns; i++)
-		cout << arr[i] << " ";
+		OutFile << arr[i] << " ";
+
 
 
 }
