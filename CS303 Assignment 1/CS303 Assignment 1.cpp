@@ -1,5 +1,5 @@
 // CS303 Assignment 1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// Comp-Sci 303 2025
 
 #include <iostream>
 #include <fstream>
