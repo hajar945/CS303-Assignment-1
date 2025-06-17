@@ -61,7 +61,7 @@ int main()
 
 	removeElement(arr, 0, OutFile);
 	
-	OutFile << " \n\n=========== Output file CLOSING  ===========\n";
+	OutFile << " \n\n=========== Output file Close  ===========\n";
 
 	// Close the output file
 	OutFile.close();
