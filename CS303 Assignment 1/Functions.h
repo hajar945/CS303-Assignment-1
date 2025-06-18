@@ -15,9 +15,8 @@ using namespace std;
 // Function to read data from a file into an array
 
 // https://stackoverflow.com/questions/47426692/read-data-from-a-file-into-an-array-c
-const int SIZE = 101; // 101 for the extra space for adding an element at the end of the array
+const int SIZE = 200; // 101 for the extra space for adding an element at the end of the array
 int arr[SIZE];
-
 
 
 void readData(ofstream& OutFile) {
@@ -43,9 +42,20 @@ void readData(ofstream& OutFile) {
 	else { //Error message
 		cerr << "Can't find input file " << inFileName << endl;
 	}
+
+
 	
 }
 
+
+int num_of_elements() {
+	auto last = std::find(std::begin(arr), std::end(arr), 0);
+
+	auto num_items = std::distance(std::begin(arr), last);
+
+	cout << "\n\nNumber of elements in the array is: " << num_items << endl;
+	return num_items;
+}
 
 
 int minValue() { // https://stackoverflow.com/questions/66677428/how-do-i-find-the-smallest-element-of-an-array-in-c
@@ -261,8 +271,8 @@ int modify_value(ofstream& OutFile) {
 
 
 // Function to display the array elements
-void displayArr(int arr[], int n, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
-	for (int i = 0; i < n; i++) {
+void displayArr(int arr[], ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
+	for (int i = 0; i < SIZE; i++) {
 		cout << arr[i] << ", ";
 		OutFile << arr[i] << ", ";
 
@@ -271,11 +281,19 @@ void displayArr(int arr[], int n, ofstream& OutFile) { // https://www.tutorialsp
 }
 
 // (QUESTION 3) Function to insert an element at the end of the array
-void insertAtEnd(int arr[], int& n, int e, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
+void insertAtEnd(int arr[], int e, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
+	
+
+
 
 	try {
 
-		if (e < 0) {
+		if (cin.fail()) {
+			cin.clear();  // Clear error state
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Discard invalid input
+			cout << "Invalid element. Please enter an integer\n";
+		}
+		else if (e < 0) {
 			cout << "\nInvalid element. Please enter a positive integer over 0.\n";
 			OutFile << "\nInvalid element. Please enter a positive integer over 0.\n";
 
@@ -300,10 +318,13 @@ void insertAtEnd(int arr[], int& n, int e, ofstream& OutFile) { // https://www.t
 
 	}
 
-	if (n < SIZE) {
+
+	int n = num_of_elements();
+ if (n < SIZE && arr[n] == NULL) {
 		arr[n] = e;
 	}
 	n = n + 1;
+
 }
 
 
@@ -332,6 +353,7 @@ void removeElement(int arr[], int key, ofstream& OutFile) { // https://stackover
 	for (int i = 0; i < ns; i++)
 		OutFile << arr[i] << " ";
 
-
+	// decrement the number of items by one
+	// num_items -= num_items;
 
 }
