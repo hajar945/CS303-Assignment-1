@@ -50,15 +50,15 @@ void menu1(ofstream& OutFile)
 		// Display the result 
 		switch (choice) {
 		case 'A': {
-			cout << "You have selected (A) Check if a certain integer exists in the array\n";
-			OutFile << "You have selected (A) Check if a certain integer exists in the array\n";
+			cout << "\nYou have selected (A) Check if a certain integer exists in the array\n";
+			OutFile << "\nYou have selected (A) Check if a certain integer exists in the array\n";
 
 			IntExists(OutFile);
 			break;
 		}
 		case 'B': {
-			cout << "You have selected (B) Modify a value\n";
-			OutFile << "You have selected (B) Modify a value\n";
+			cout << "\nYou have selected (B) Modify a value\n";
+			OutFile << "\nYou have selected (B) Modify a value\n";
 
 			modify_value(OutFile);
 			int n = SIZE;
@@ -82,28 +82,28 @@ void menu1(ofstream& OutFile)
 			break;
 		}
 		case 'D': {
-			cout << "You have selected (D) Remove an element from the array\n";
-			OutFile << "You have selected (D) Remove an element from the array\n";
+			cout << "\nYou have selected (D) Remove an element from the array\n";
+			OutFile << "\nYou have selected (D) Remove an element from the array\n";
 
 			removeElement(arr, 0, OutFile);
 			break;
 		}
 		case 'E': {
-			cout << "You have selected (E) Display the array\n ";
-			OutFile << "You have selected (E) Display the array\n ";
+			cout << "\nYou have selected (E) Display the array\n ";
+			OutFile << "\nYou have selected (E) Display the array\n ";
 			displayArr(arr, OutFile);
 			break;
 		}
 		case 'F': {
-			cout << "You have selected (F) Exit the program\n ";
-			OutFile << "You have selected (F) Exit the program\n ";
+			cout << "\nYou have selected (F) Exit the program\n ";
+			OutFile << "\nYou have selected (F) Exit the program\n ";
 
 			return;  // Exit the loop and terminate the program
 
 		}
 		default:
-			cout << "Invalid choice. Please select a valid option (A, B, C, D).\n";
-			OutFile << "Invalid choice. Please select a valid option (A, B, C, D).\n";
+			cout << "\nInvalid choice. Please select a valid option (A, B, C, D).\n";
+			OutFile << "\nInvalid choice. Please select a valid option (A, B, C, D).\n";
 
 			break;
 		}

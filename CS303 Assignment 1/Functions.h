@@ -272,12 +272,23 @@ int modify_value(ofstream& OutFile) {
 
 // Function to display the array elements
 void displayArr(int arr[], ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
+	
+	int elementsPerRow = 10; // Number of elements per row
+
 	for (int i = 0; i < SIZE; i++) {
 		cout << arr[i] << ", ";
 		OutFile << arr[i] << ", ";
 
+		// Print a newline after every 'elementsPerRow' elements
+		if ((i + 1) % elementsPerRow == 0) { // https://stackoverflow.com/questions/21009569/how-to-print-specific-amount-of-elements-of-array-per-line
+			cout << endl;
+			OutFile << endl;
+
+		}
+
 	}
 	OutFile << endl;
+
 }
 
 // (QUESTION 3) Function to insert an element at the end of the array
