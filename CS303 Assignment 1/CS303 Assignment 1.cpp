@@ -51,11 +51,15 @@ void menu1(ofstream& OutFile)
 		switch (choice) {
 		case 'A': {
 			cout << "You have selected (A) Check if a certain integer exists in the array\n";
+			OutFile << "You have selected (A) Check if a certain integer exists in the array\n";
+
 			IntExists(OutFile);
 			break;
 		}
 		case 'B': {
 			cout << "You have selected (B) Modify a value\n";
+			OutFile << "You have selected (B) Modify a value\n";
+
 			modify_value(OutFile);
 			int n = SIZE;
 			displayArr(arr, OutFile);
@@ -63,36 +67,44 @@ void menu1(ofstream& OutFile)
 			break;
 		}
 		case 'C': {
-			cout << "You have selected (C) Add an element at the end of the array\n";
-			cout << num_of_elements;
+			cout << "\nYou have selected (C) Add an element at the end of the array\n";
+			OutFile << "\nYou have selected (C) Add an element at the end of the array\n";
+
 			int e = 0;
+			cout << "Please enter an element to insert at the end of the array:  ";
+			OutFile << "Please enter an element to insert at the end of the array:  ";
+
 			cin >> e;
 
 			insertAtEnd(arr, e, OutFile);
 			displayArr(arr, OutFile);
 
-
-			cout << "You have tried adding the elmement " << e << " at the end of the array.\n";
-
 			break;
 		}
 		case 'D': {
 			cout << "You have selected (D) Remove an element from the array\n";
+			OutFile << "You have selected (D) Remove an element from the array\n";
+
 			removeElement(arr, 0, OutFile);
 			break;
 		}
 		case 'E': {
 			cout << "You have selected (E) Display the array\n ";
+			OutFile << "You have selected (E) Display the array\n ";
 			displayArr(arr, OutFile);
 			break;
 		}
 		case 'F': {
 			cout << "You have selected (F) Exit the program\n ";
+			OutFile << "You have selected (F) Exit the program\n ";
+
 			return;  // Exit the loop and terminate the program
 
 		}
 		default:
 			cout << "Invalid choice. Please select a valid option (A, B, C, D).\n";
+			OutFile << "Invalid choice. Please select a valid option (A, B, C, D).\n";
+
 			break;
 		}
 	}
@@ -121,7 +133,6 @@ int main()
 
 	readData(OutFile);
 
-	num_of_elements();
 	// Display the menu 
 	menu1(OutFile);
 	
