@@ -329,8 +329,6 @@ void displayArr(int arr[], ofstream& OutFile) { // https://www.tutorialspoint.co
 void insertAtEnd(int arr[], int e, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
 	try {
 		if (!(std::cin >> e)) {
-			cin.clear();  // Clear error state
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Discard invalid input
 			// Non-integer input
 			throw std::invalid_argument("Input is not a valid integer.");
 		}
@@ -369,6 +367,8 @@ void insertAtEnd(int arr[], int e, ofstream& OutFile) { // https://www.tutorials
 		OutFile << "Caught exception: " << e.what() << endl;
 
 	}
+	cin.clear();  // Clear error state
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Discard invalid input
 }
 
 
