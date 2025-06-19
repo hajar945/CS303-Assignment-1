@@ -327,46 +327,45 @@ void displayArr(int arr[], ofstream& OutFile) { // https://www.tutorialspoint.co
 
 // (QUESTION 3) Function to insert an element at the end of the array
 void insertAtEnd(int arr[], int e, ofstream& OutFile) { // https://www.tutorialspoint.com/cplusplus-program-to-append-an-element-into-an-array
-	try {
-		if (!(std::cin >> e)) {
-			// Non-integer input
-			throw std::invalid_argument("Input is not a valid integer.");
+	do {
+		try {
+			if (!(std::cin >> e)) {
+				// Non-integer input
+				throw std::invalid_argument("Input is not a valid integer.");
+			}
+			else if (e < 0) {
+				cout << "\nInvalid element. Please enter a positive integer over 0.\n";
+				OutFile << "\nInvalid element. Please enter a positive integer over 0.\n";
+
+				throw out_of_range("Out of range");
+
+			}
+			else if (e == 0) {
+				cout << "\nInvalid element. Please enter an integer greater than 0.\n";
+				OutFile << "\nInvalid element. Please enter an integer greater than 0.\n";
+
+				throw out_of_range("Out of range");
+
+			}
+			int n = num_of_elements();
+			if (n < SIZE && arr[n] == NULL) {
+				arr[n] = e;
+			}
+			n = n + 1;
 		}
+		// executed when exception is of type invalid argument
+		catch (invalid_argument e) {
+			cout << "Caught exception: " << e.what() << endl;
+			OutFile << "Caught exception: " << e.what() << endl;
 
-		else if (e < 0) {
-			cout << "\nInvalid element. Please enter a positive integer over 0.\n";
-			OutFile << "\nInvalid element. Please enter a positive integer over 0.\n";
-
-			throw out_of_range("Out of range");
-			std::cin.clear(); // Clear the error flags
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard the invalid input
 		}
-		else if (e == 0) {
-			cout << "\nInvalid element. Please enter an integer greater than 0.\n";
-			OutFile << "\nInvalid element. Please enter an integer greater than 0.\n";
+		// executed when exception is of type out_of_range
+		catch (out_of_range e) {
+			cout << "Caught exception: " << e.what() << endl;
+			OutFile << "Caught exception: " << e.what() << endl;
 
-			throw out_of_range("Out of range");
-			std::cin.clear(); // Clear the error flags
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard the invalid input
 		}
-		int n = num_of_elements();
-		if (n < SIZE && arr[n] == NULL) {
-			arr[n] = e;
-		}
-		n = n + 1;
-	}
-	// executed when exception is of type invalid argument
-	catch (invalid_argument e) {
-		cout << "Caught exception: " << e.what() << endl;
-		OutFile << "Caught exception: " << e.what() << endl;
-
-	}
-	// executed when exception is of type out_of_range
-	catch (out_of_range e) {
-		cout << "Caught exception: " << e.what() << endl;
-		OutFile << "Caught exception: " << e.what() << endl;
-
-	}
+	} while (!(e <= 0));
 	cin.clear();  // Clear error state
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Discard invalid input
 }
@@ -428,4 +427,6 @@ void removeElement(int arr[], int key, ofstream& OutFile) { // https://stackover
 		}
 
 	} while (!(key >= 0 && key < SIZE));
+	cin.clear();  // Clear error state
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Discard invalid input
 }
